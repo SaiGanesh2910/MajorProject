@@ -1,6 +1,8 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import time
+from datetime import datetime
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
@@ -11,6 +13,7 @@ counter_right_sl = 0
 counter_left_sl = 0
 stage_lsl = None
 stage_rsl = None
+start_time3 = time.time()
 
 #calculating angles
 def calculate_angle(a, b, c):
@@ -146,6 +149,11 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         cv2.imshow('Mediapipe Feed', image)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
+            with open('Exercise_Tracking_List_lateral.csv', 'a+') as f:
+                now = datetime.now()
+                time1 = time.time() - start_time3
+                date = now.strftime('%D')
+                f.writelines(f'\n{counter_left_sl},{counter_right_sl},{time1},{date}')
             break
 
     cap.release()

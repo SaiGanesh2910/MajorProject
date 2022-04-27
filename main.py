@@ -1,6 +1,8 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import time
+from datetime import datetime
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
@@ -11,6 +13,7 @@ counter_bicepcurl = 0
 counter_shoulderpress=0
 stage = None
 stage_sp = None
+start_time1 = time.time()
 
 #calculating angles
 def calculate_angle(a, b, c):
@@ -141,7 +144,13 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         cv2.imshow('Mediapipe Feed', image)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
+            with open('Exercise_Tracking_List_Bicep.csv', 'a+') as f:
+                now = datetime.now()
+                time1 = time.time() - start_time1
+                date = now.strftime('%D')
+                f.writelines(f'\n{counter_bicepcurl},{time1},{date}')
             break
+
 
     cap.release()
     cv2.destroyAllWindows()

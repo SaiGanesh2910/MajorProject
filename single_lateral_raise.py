@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 import time
 from datetime import datetime
+
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
@@ -11,11 +12,12 @@ cap = cv2.VideoCapture(0)
 # Curl counter variables
 counter_right_sl = 0
 counter_left_sl = 0
-stage_lsl = None
-stage_rsl = None
+stage = None
+stage_sp = None
 start_time3 = time.time()
 
-#calculating angles
+
+# calculating angles
 def calculate_angle(a, b, c):
     a = np.array(a)  # First
     b = np.array(b)  # Mid
@@ -28,6 +30,7 @@ def calculate_angle(a, b, c):
         angle = 360 - angle
 
     return angle
+
 
 ## Setup mediapipe instance
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
@@ -57,7 +60,6 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             wrist_left = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
                           landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
 
-
             # Get coordinates right side
             shoulder_right = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x,
                               landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
@@ -66,17 +68,17 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             wrist_right = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x,
                            landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
             left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
-                           landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
+                        landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
             right_hip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x,
-                       landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
+                         landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
 
             # Calculate angle
-            angle_left = calculate_angle(left_hip,shoulder_left, wrist_left)
-            angle_right = calculate_angle(right_hip,shoulder_right, wrist_right)
-            #angle_left_sp = calculate_angle(elbow_left,shoulder_left,shoulder_right)
-            #print(angle_left_sp)
-            #print(angle_right)
-            #print('hi')
+            angle_left = calculate_angle(left_hip, shoulder_left, wrist_left)
+            angle_right = calculate_angle(right_hip, shoulder_right, wrist_right)
+            # angle_left_sp = calculate_angle(elbow_left,shoulder_left,shoulder_right)
+            # print(angle_left_sp)
+            # print(angle_right)
+            # print('hi')
 
             # Visualize angle
             cv2.putText(image, str(angle_left),
@@ -89,18 +91,19 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                         )
 
             # Curl counter logic
-            if angle_left < 30 :
+            if angle_left < 30:
                 stage = "down"
-            if angle_left >70 and angle_left<90 and stage == 'down':
+            if angle_left > 70 and angle_left < 90 and stage == 'down':
                 stage = "up"
                 counter_left_sl += 1
-                #print(counter)
+                # print(counter)
+
             if angle_right < 30:
                 stage_sp = "down"
-            if angle_right > 70 and angle_right<90 and stage_sp == "down":
+            if angle_right > 70 and angle_right < 90 and stage_sp == "down":
                 stage_sp = "up"
                 counter_right_sl += 1
-                #print(counter_shoulderpress)
+                # print(counter_shoulderpress)
 
         except:
             pass
@@ -123,8 +126,8 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                     (90, 60),
                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
 
-        #box2
-        image2 = cv2.rectangle(image, (0,80), (300, 190), (245, 117, 16), -1)
+        # box2
+        image2 = cv2.rectangle(image, (0, 80), (300, 190), (245, 117, 16), -1)
 
         # Rep data
         cv2.putText(image2, 'Reps_LEFT_LateralRaise', (5, 105),
@@ -153,7 +156,8 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 now = datetime.now()
                 time1 = time.time() - start_time3
                 date = now.strftime('%D')
-                s=str(counter_left_sl)+"&"+str(counter_right_sl)
+                print(date)
+                s = str(counter_left_sl) + "&" + str(counter_right_sl)
                 f.writelines(f'\n"Left and right lateral",{s},{time1},{date}')
             break
 

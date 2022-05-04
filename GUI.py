@@ -27,19 +27,19 @@ WIDTH = 1500
 root = tk.Tk()
 def open_shoulder_press():
     start_time1 = time.time()
-    os.system('python c:/Users/chaitanya/PycharmProjects/MajorProject_dev/venv/share/shoulder_press.py')
+    os.system('python d:/IVth_year/2nd_Sem/Major_Project/Major_Project_dev/shoulder_press.py')
     global time1
     time1 = time.time()-start_time1
     print(time1)
 def open_lateral_raise():
     start_time2 = time.time()
-    os.system('python c:/Users/chaitanya/PycharmProjects/MajorProject_dev/venv/share/single_lateral_raise.py')
+    os.system('python d:/IVth_year/2nd_Sem/Major_Project/Major_Project_dev/single_lateral_raise.py')
     global time2
     time2 = time.time() - start_time2
 
 def open_bicep_curl():
     start_time3 = time.time()
-    os.system('python c:/Users/chaitanya/PycharmProjects/MajorProject_dev/venv/share/main.py')
+    os.system('python d:/IVth_year/2nd_Sem/Major_Project/Major_Project_dev/main.py')
     global time3
     time3 = time.time() - start_time3
     #os.system('c:/Windows/system32/notepad.exe')
@@ -50,7 +50,7 @@ background_image = tk.PhotoImage(file='landscape.png')
 background_label = tk.Label(root, image=background_image)
 background_label.place(relwidth=1, relheight=1)
 
-frame = tk.Frame(root, bd=15)
+frame = tk.Frame(root, bd=15,height=500,width=800)
 frame.place(relx=0.5, rely=0.25, relwidth=0.75, relheight=0.6, anchor='n')
 
 
@@ -100,8 +100,11 @@ gif_label.pack()
 button = tk.Button(frame,text="Show_sample",command=lambda :animation(count))
 button.place(relx=0.8,rely=0.03, relheight=0.15, relwidth=0.08)
 #button.pack(side= RIGHT)
-"""button = tk.Button(frame,text="Time",command= lambda :showtime1())
-button.place(relx=0.7,rely=0.03, relheight=0.15, relwidth=0.08)"""
+
+
+button = tk.Button(frame,text="Result",bg='light blue',command= lambda :show_result())
+button.place(relx=0.5,rely=0.8, relheight=0.15, relwidth=0.08)
+#button.place(relx=0.7,rely=0.03, relheight=0.15, relwidth=0.08)
 
 button = tk.Button(frame,text="stop",command=stop_animation)
 button.place(relx=0.9, rely=0.03,relheight=0.15, relwidth=0.06)
@@ -122,6 +125,9 @@ im2 = [tk.PhotoImage(file=file2,format=f"gif -index {i}") for i in range(frames2
 
 count2 = 0
 anim2 = None
+def show_result():
+    os.startfile("d:/IVth_year/2nd_Sem/Major_Project/Major_Project_dev/Exercise_Tracking_List.csv")
+
 def animation2(count2):
     global anim2
     im22 = im2[count2]
@@ -140,7 +146,7 @@ gif_label2 = tk.Label(frame,image="")
 gif_label2.config(bg='light blue')
 gif_label2.pack()
 
-button = tk.Button(frame,text="Show_sample2",command=lambda :animation2(count2))
+button = tk.Button(frame,text="Show_sample",command=lambda :animation2(count2))
 button.place(relx=0.8,rely=0.3, relheight=0.15, relwidth=0.08)
 button = tk.Button(frame,text="stop",command=stop_animation2)
 button.place(relx=0.9, rely=0.3,relheight=0.15, relwidth=0.06)

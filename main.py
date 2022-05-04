@@ -144,11 +144,11 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         cv2.imshow('Mediapipe Feed', image)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
-            with open('Exercise_Tracking_List_Bicep.csv', 'a+') as f:
+            with open('Exercise_Tracking_List.csv', 'a+') as f:
                 now = datetime.now()
                 time1 = time.time() - start_time1
                 date = now.strftime('%D')
-                f.writelines(f'\n{counter_bicepcurl},{time1},{date}')
+                f.writelines(f'\n"Bicep Curls",{counter_bicepcurl},{time1},{date}')
             break
 
 
